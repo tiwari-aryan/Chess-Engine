@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from const import *
+from game import Game
 
 
 class Main:
@@ -10,8 +11,11 @@ class Main:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Chess Engine")
 
+        self.game = Game()
+
     def main_loop(self):
         while True:
+            self.game.show_bg(self.screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
