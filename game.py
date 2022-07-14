@@ -2,11 +2,13 @@ import pygame
 
 from const import *
 from board import Board
+from dragger import Dragger
 
 
 class Game:
     def __init__(self):
         self.board = Board()
+        self.dragger = Dragger()
 
     # Methods to show different images
 
@@ -28,11 +30,12 @@ class Game:
             for column in range(COLS):
                 if self.board.squares[row][column].has_piece():
                     piece = self.board.squares[row][column].piece
-
-                    image = pygame.image.load(piece.image)
-                    image_center = (
-                        column * SQUARE_SIZE + SQUARE_SIZE // 2,
-                        row * SQUARE_SIZE + SQUARE_SIZE // 2,
-                    )
-                    piece.image_rect = image.get_rect(center=image_center)
-                    surface.blit(image, piece.image_rect)
+                    if piece is not self.dragger.piece:
+                        piece.set_image(size=80)
+                        image = pygame.image.load(piece.image)
+                        image_center = (
+                            column * SQUARE_SIZE + SQUARE_SIZE // 2,
+                            row * SQUARE_SIZE + SQUARE_SIZE // 2,
+                        )
+                        piece.image_rect = image.get_rect(center=image_center)
+                        surface.blit(image, piece.image_rect)
