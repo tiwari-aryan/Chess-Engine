@@ -39,3 +39,20 @@ class Game:
                         )
                         piece.image_rect = image.get_rect(center=image_center)
                         surface.blit(image, piece.image_rect)
+
+    def show_moves(self, surface):
+        if self.dragger.dragging:
+            piece = self.dragger.piece
+            for move in piece.moves:
+                colour = (
+                    (200, 100, 100)
+                    if move.final.row + move.final.column % 2 == 0
+                    else (200, 70, 70)
+                )
+                square = pygame.Rect(
+                    move.final.column * SQUARE_SIZE,
+                    move.final.row * SQUARE_SIZE,
+                    SQUARE_SIZE,
+                    SQUARE_SIZE,
+                )
+                pygame.draw.rect(surface, colour, square)
