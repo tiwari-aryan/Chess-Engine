@@ -164,15 +164,15 @@ class Board:
         self.squares[others][6] = Square(others, 1, Knight(colour))
 
         # Adding the bishops
-        self.squares[others][2] = Square(others, 1, Bishop(colour))
-        self.squares[others][5] = Square(others, 1, Bishop(colour))
+        self.squares[others][2] = Square(others, 2, Bishop(colour))
+        self.squares[others][5] = Square(others, 5, Bishop(colour))
 
         # Adding the rooks
-        self.squares[others][0] = Square(others, 1, Rook(colour))
-        self.squares[others][7] = Square(others, 1, Rook(colour))
+        self.squares[others][0] = Square(others, 0, Rook(colour))
+        self.squares[others][7] = Square(others, 7, Rook(colour))
 
         # Adding the queen
-        self.squares[others][3] = Square(others, 1, Queen(colour))
+        self.squares[others][3] = Square(others, 3, Queen(colour))
 
         # Adding the king
-        self.squares[others][4] = Square(others, 1, King(colour))
+        self.squares[others][4] = Square(others, 4, King(colour))
