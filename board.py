@@ -161,7 +161,7 @@ class Board:
 
         # Adding the knights
         self.squares[others][1] = Square(others, 1, Knight(colour))
-        self.squares[others][6] = Square(others, 1, Knight(colour))
+        self.squares[others][6] = Square(others, 6, Knight(colour))
 
         # Adding the bishops
         self.squares[others][2] = Square(others, 2, Bishop(colour))

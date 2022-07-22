@@ -68,11 +68,14 @@ class Main:
                         released_column = dragger.mouse_x // SQUARE_SIZE
 
                         initial_position = Square(
-                            dragger.initial_row, dragger.initial_column, piece
+                            dragger.initial_row, dragger.initial_column
                         )
-                        final_position = Square(released_row, released_column, piece)
+                        final_position = Square(released_row, released_column)
                         move = Move(initial_position, final_position)
                         if board.valid_move(dragger.piece, move):
+                            move_square = board.squares[released_row][released_column]
+                            captured = move_square.has_piece()
+                            game.play_sound(captured)
                             board.move(dragger.piece, move)
                             game.next_turn()
                             game.show_bg(screen)
@@ -80,6 +83,10 @@ class Main:
                             game.show_pieces(screen)
                             game.show_hover(screen)
                     dragger.undrag_piece(piece)
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_t:
+                        game.change_theme()
+                        print(board.squares)
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()

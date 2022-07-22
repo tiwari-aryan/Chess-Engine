@@ -4,6 +4,7 @@ from const import *
 from board import Board
 from dragger import Dragger
 from square import Square
+from config import Config
 
 
 class Game:
@@ -12,16 +13,15 @@ class Game:
         self.hovered_square = None
         self.board = Board()
         self.dragger = Dragger()
+        self.config = Config()
 
     # Methods to show different images
 
     def show_bg(self, surface):
+        theme = self.config.theme
         for row in range(ROWS):
             for column in range(COLS):
-                if (row + column) % 2 == 0:
-                    colour = (234, 235, 200)
-                else:
-                    colour = (199, 154, 88)
+                colour = theme.bg.light if (row + column) % 2 == 0 else theme.bg.dark
 
                 square = pygame.Rect(
                     column * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE
@@ -44,13 +44,14 @@ class Game:
                         surface.blit(image, piece.image_rect)
 
     def show_moves(self, surface):
+        theme = self.config.theme
         if self.dragger.dragging:
             piece = self.dragger.piece
             for move in piece.moves:
                 colour = (
-                    (200, 100, 100)
+                    theme.moves.light
                     if move.final.row + move.final.column % 2 == 0
-                    else (200, 70, 70)
+                    else theme.moves.dark
                 )
                 square = pygame.Rect(
                     move.final.column * SQUARE_SIZE,
@@ -61,14 +62,15 @@ class Game:
                 pygame.draw.rect(surface, colour, square)
 
     def show_last_move(self, surface):
+        theme = self.config.theme
         if self.board.last_move:
             initial_position = self.board.last_move.initial
             final_position = self.board.last_move.final
             for position in [initial_position, final_position]:
                 colour = (
-                    (244, 247, 116)
+                    theme.trace.light
                     if position.row + position.column % 2 == 0
-                    else (172, 195, 51)
+                    else theme.trace.dark
                 )
                 square = pygame.Rect(
                     position.column * SQUARE_SIZE,
@@ -94,3 +96,12 @@ class Game:
 
     def set_hover(self, row, column):
         self.hovered_square = self.board.squares[row][column]
+
+    def change_theme(self):
+        self.config.change_theme()
+
+    def play_sound(self, captured=False):
+        if captured:
+            self.config.capture_sound.play()
+        else:
+            self.config.move_sound.play()
