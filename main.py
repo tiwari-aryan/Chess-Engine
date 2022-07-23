@@ -39,8 +39,8 @@ class Main:
                     clicked_column = dragger.mouse_x // SQUARE_SIZE
                     piece = board.squares[clicked_row][clicked_column].piece
                     if board.squares[clicked_row][clicked_column].has_piece():
+                        board.calc_moves(piece, clicked_row, clicked_column)
                         if piece.colour == game.next_player:
-                            board.calc_moves(piece, clicked_row, clicked_column)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
                             game.show_bg(screen)
@@ -82,11 +82,11 @@ class Main:
                             game.show_last_move(screen)
                             game.show_pieces(screen)
                             game.show_hover(screen)
+                    piece.clear_moves()
                     dragger.undrag_piece(piece)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_t:
                         game.change_theme()
-                        print(board.squares)
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
