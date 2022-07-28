@@ -17,8 +17,8 @@ class Main:
 
     def main_loop(self):
 
-        game = self.game
         screen = self.screen
+        game = self.game
         board = self.game.board
         dragger = self.game.dragger
 
@@ -87,6 +87,11 @@ class Main:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_t:
                         game.change_theme()
+                    if event.key == pygame.K_ESCAPE:
+                        game.reset()
+                        game = self.game
+                        board = self.game.board
+                        dragger = self.game.dragger
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
