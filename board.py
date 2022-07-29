@@ -22,6 +22,12 @@ class Board:
         if isinstance(piece, Pawn):
             self.check_promotion(piece, final_position)
 
+        if isinstance(piece, King):
+            if self.castling(initial_position, final_position):
+                diff = final_position.column - initial_position.column
+                rook = piece.left_rook if diff < 0 else piece.right_rook
+                self.move(rook, rook.moves[-1])
+
         piece.moved = True
 
         piece.clear_moves()
@@ -36,6 +42,9 @@ class Board:
             self.squares[final_position.row][final_position.column].piece = Queen(
                 piece.colour
             )
+
+    def castling(self, initial_position, final_position):
+        return abs(initial_position.column - final_position.column) == 2
 
     def calc_moves(self, piece, row, column):
         def pawn_moves():
@@ -141,6 +150,43 @@ class Board:
                         final_position = Square(possible_move_row, possible_move_column)
                         move = Move(initial_position, final_position)
                         piece.add_moves(move)
+
+            if not piece.moved:
+                left_rook = self.squares[row][0].piece
+                castling = True
+                if isinstance(left_rook, Rook):
+                    if not left_rook.moved:
+                        for c in range(1, 4):
+                            if self.squares[row][c].has_piece():
+                                castling = False
+                        if castling == True:
+                            piece.left_rook = left_rook
+                            initial_position = Square(row, 0)
+                            final_position = Square(row, 3)
+                            move = Move(initial_position, final_position)
+                            left_rook.add_moves(move)
+                            initial_position = Square(row, column)
+                            final_position = Square(row, 2)
+                            move = Move(initial_position, final_position)
+                            piece.add_moves(move)
+
+                right_rook = self.squares[row][7].piece
+                castling = True
+                if isinstance(right_rook, Rook):
+                    if not right_rook.moved:
+                        for c in range(5, 7):
+                            if self.squares[row][c].has_piece():
+                                castling = False
+                        if castling == True:
+                            piece.right_rook = right_rook
+                            initial_position = Square(row, 7)
+                            final_position = Square(row, 5)
+                            move = Move(initial_position, final_position)
+                            right_rook.add_moves(move)
+                            initial_position = Square(row, column)
+                            final_position = Square(row, 6)
+                            move = Move(initial_position, final_position)
+                            piece.add_moves(move)
 
         if isinstance(piece, Pawn):
             pawn_moves()
